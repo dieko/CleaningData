@@ -11,7 +11,7 @@ if (!(require("reshape2", character.only=T, quietly=T))) {
         library("reshape2", character.only=T)
 }
 
-date <- date()
+date_download <- date()
 # Get the data
 if(!file.exists("./data")){dir.create("./data")}
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -35,8 +35,8 @@ activity_data<- rbind(activity_test, activity_train)
 # Load and process Subject files
 subject_test  <- read.table(file.path(path_data, "test" , "subject_test.txt"),header = FALSE)
 subject_train <- read.table(file.path(path_data, "train", "subject_train.txt"),header = FALSE)
-names(subject_test) = "subject"
-names(subject_train) = "subject"
+names(subject_test) <- "subject"
+names(subject_train) <- "subject"
 # bind subject data by row
 subject_data <- rbind(subject_test, subject_train)
                               
@@ -66,9 +66,10 @@ names(features_train) <- features
 # bind features data by row
 features_data <- rbind(features_test, features_train)
                                                      
-# merge features_data, activity_data and subject_data by column
+# Merge features_data, activity_data and subject_data by column
 data <- do.call(cbind, list(features_data, activity_data, subject_data))
 
+# Independent tidy data set with the average of each variable for each activity and each subject
 id_variables <- c("subject", "Activity_ID", "Activity_Label")
 melt_data <- melt(data, id.vars = id_variables)
 # Apply mean function to dataset using dcast function
